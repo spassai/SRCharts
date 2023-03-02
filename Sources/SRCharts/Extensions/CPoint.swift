@@ -53,4 +53,18 @@ extension CGPoint{
         let l = self.length()
         return CGPointMake(self.x / l, self.y / l)
     }
+    
+    func getControl(p2: CGPoint, p3: CGPoint, d1: CGFloat, d2: CGFloat, alpha: CGFloat = 1) -> CGPoint {
+        var result = p3 * pow(d1, 2 * alpha)
+        var t1 = 2 * pow(d1, 2 * alpha)
+
+        t1 = t1 + 3 * pow(d1, alpha) * pow(d2, alpha)
+        t1 = t1 + pow(d2, 2 * alpha)
+
+        result = result - self * pow(d2, 2 * alpha)
+        result = result + p2 * t1
+        result = result * (1.0 / (3 * pow(d1, alpha) * (pow(d1, alpha) + pow(d2, alpha))))
+
+        return result
+    }
 }

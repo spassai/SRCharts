@@ -1,7 +1,9 @@
 import Foundation
 
 /// RadarChartView를 그리기 위한 데이터
-open class RadarData {
+open class RadarData: NSObject, Identifiable {
+    public let id: UUID
+    
     /// 지표 이름
     public var name: String
 
@@ -19,6 +21,7 @@ open class RadarData {
     ///   - value: 지표 값
 
     public init(name: String, value: Double) {
+        self.id = UUID()
         self.name = name
         self.value = value
         self.radius = 0
