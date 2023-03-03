@@ -52,7 +52,7 @@ public struct RadarChartView: View {
     @Environment(\.fillColor) var fillColor
     @Environment(\.lineStyle) var lineStyle
     
-    init(dataSet: [RadarData], options: RadarOption = RadarOption()) {
+    public init(dataSet: [RadarData], options: RadarOption = RadarOption()) {
         self.dataSet = dataSet
         self.options = options
         let maxValue = options.maxValue ?? self.dataSet.map { rader in
