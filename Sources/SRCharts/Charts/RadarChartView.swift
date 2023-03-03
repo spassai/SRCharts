@@ -47,8 +47,12 @@ public struct RadarChartView: View {
 
     @State private var points: [CGPoint]
     @State private var indicatorData: [IndicatorData]
+    @State private var shapeFillColor: Color = .gray
     
-    public init(dataSet: [RadarData], options: RadarOption = RadarOption()) {
+    @Environment(\.fillColor) var fillColor
+    @Environment(\.lineStyle) var lineStyle
+    
+    init(dataSet: [RadarData], options: RadarOption = RadarOption()) {
         self.dataSet = dataSet
         self.options = options
         let maxValue = options.maxValue ?? self.dataSet.map { rader in
@@ -77,7 +81,7 @@ public struct RadarChartView: View {
     public var body: some View {
         ZStack {
             GeometryReader { reader in
-                let radius: Double = ((reader.size.width < reader.size.height ? Double(reader.size.width) : Double(reader.size.height)) / 2) - options.padding
+                let radius: Double = Double(reader.size.width) / 2 - options.padding
                 let center: CGPoint = CGPoint(x: reader.size.width / 2, y: reader.size.height / 2)
                 
                 // draw Indicator
@@ -87,18 +91,32 @@ public struct RadarChartView: View {
                 RadarChartGuideLineView(points: points, center: center, radius: radius)
                 
                 // Draw Chart value area
-                RadarChartValueView(points: points, center: center, radius: radius, valueStyle: options.valueStyle)
+                RadarChartValueView(points: points, center: center, radius: radius, valueStyle: options.valueStyle, shapeFillColor: shapeFillColor)
                 
                 // Draw Chart value text
                 RadarChartValueText(data: dataSet, points: points, center: center, radius: radius, valueStyle: options.valueStyle)
             }
         }
+        .onAppear() {
+            self.shapeFillColor = getFillColor(self.lineStyle.color)
+        }
         .onChange(of: dataSet) { newValue in
             updateIndicatorData(dataSet: newValue)
             updateChartValueData(dataSet: newValue)
         }
+        .onChange(of: lineStyle.color) { newValue in
+            let color = self.fillColor ?? newValue
+
+            withAnimation {
+                self.shapeFillColor = getFillColor(color)
+            }
+        }
     }
-   
+
+    func getFillColor(_ color: Color) -> Color {
+        return self.fillColor ?? color
+    }
+
     func updateIndicatorData(dataSet: [RadarData]) {
         var indicatorData: [IndicatorData] = []
         for index in 0..<self.dataSet.count {
