@@ -29,8 +29,8 @@ import SwiftUI
 ///             ),
 ///             valueStyle: ValueStyle(
 ///                 size: 10,
-///                 color: .primary,
-///                 weight: .bold,
+///                 color: .secondary,
+///                 weight: .light,
 ///                 show: true,
 ///                 showPointer: true,
 ///                 fill: true,
@@ -111,7 +111,7 @@ public struct RadarChartView: View {
 
     func updateChartValueData(dataSet: [RadarData]) {
         var points: [CGPoint] = []
-        let maxValue = options.maxValue ?? self.dataSet.map { rader in
+        let maxValue = options.maxValue ?? dataSet.map { rader in
             return rader.value
         }.max()
 

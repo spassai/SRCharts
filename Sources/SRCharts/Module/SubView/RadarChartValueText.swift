@@ -18,7 +18,7 @@ struct RadarChartValueText: View {
                     .fontWeight(self.valueStyle.weight)
                     .foregroundColor(self.valueStyle.color)
                     .font(.system(size: self.valueStyle.size))
-                    .position(points[index] * radius + center - CGPoint(x: 0, y: 13))
+                    .position(points[index] * radius + center - CGPoint(x: 0, y: 10))
                 
                 if self.valueStyle.showPointer {
                     Circle()
