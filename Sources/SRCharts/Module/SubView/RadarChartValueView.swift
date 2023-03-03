@@ -7,24 +7,24 @@ struct RadarChartValueView: View {
     var center: CGPoint
     var radius: Double
     var valueStyle: ValueStyle
+    var shapeFillColor: Color
     
     @Environment(\.fillColor) var fillColor
     @Environment(\.lineStyle) var lineStyle
-
-    init(points: [CGPoint], center: CGPoint, radius: Double, valueStyle: ValueStyle) {
+    
+    init(points: [CGPoint], center: CGPoint, radius: Double, valueStyle: ValueStyle, shapeFillColor: Color) {
         self.points = points.map { point in
             return point * radius + center
         }
         self.center = center
         self.radius = radius
         self.valueStyle = valueStyle
+        self.shapeFillColor = shapeFillColor
     }
     
     var body: some View {
         ZStack {
             if points.count > 0 {
-                let shapeFillColor = self.fillColor ?? self.lineStyle.color
-
                 ValuePathShape(points: points, type: self.lineStyle.type)
                     .fill(shapeFillColor.opacity(self.valueStyle.fillOpacity), strokeBorder: lineStyle.color, lineWidth: lineStyle.lineWidth)
             }
